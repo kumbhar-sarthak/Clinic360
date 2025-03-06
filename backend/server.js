@@ -12,7 +12,7 @@ dotenv.config({
 connect()
 .then(() => {
   app.listen(process.env.PORT || 5050 ,()=>{
-    console.log(`Server listening on http://${process.env.HOST}:${process.env.PORT}`)
+    console.log(`Server listening on ${process.env.PORT}`)
   })
 })
 .catch((error)=>{

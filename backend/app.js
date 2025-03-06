@@ -1,4 +1,4 @@
-import express, { urlencoded } from 'express'
+import express from 'express'
 import cors from 'cors'
 import router from './routes/Router.js';
 import path from 'path';
@@ -15,9 +15,22 @@ app.use(helmet());
 app.use(express.urlencoded({
   extended: true,
 }))
+const allowedOrigins = [
+  "http://localhost:5173", 
+  process.env.FRONTEND_APP_URL
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_APP_URL || "http://127.0.0.1:5173",
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, 
+  methods: ["GET", "POST", "PUT", "DELETE"], 
+  allowedHeaders: ["Content-Type", "Authorization"], 
 }));
 
 const __filename = fileURLToPath(import.meta.url);
