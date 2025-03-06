@@ -32,13 +32,13 @@ This is a full-stack application that allows users to do Search for Doctors and 
 
 1. Clone the repo:
    ```sh
-   git clone https://github.com/yourusername/my-project.git
+   git clone https://github.com/kumbhar-sarthak/Clinic360.git
    ```
 
 2. Go to Dict(as need):
    ```sh
-   cd backend #for backend
-   cd frontend #for frontend
+   cd ./backend #for backend
+   cd ./frontend #for frontend
    ```
 
 3. Create .env file:
@@ -76,7 +76,6 @@ This is a full-stack application that allows users to do Search for Doctors and 
 How to use the application.
 
   ```md
-  ## Usage
 
   1. Register or log in to your account.
   2. Specifiy The role.
