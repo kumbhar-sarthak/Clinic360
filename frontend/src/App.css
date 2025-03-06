@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+body{
+  font-family: "Poppins", sans-serif;
+}
+
+.custom{
+  animation: fade 1s ;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.title:hover{
+  background: linear-gradient(120deg, #3d9ad8, #e8ab8c, #3d9ad8);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shineWave 5s linear infinite;
+}
+
+@keyframes shineWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Customize progress bar */
+#nprogress .bar {
+  background: linear-gradient(to right, #ff6b6b, #ff3b3b);
+  height: 4px;
+  border-radius: 2px;
+  transition: all 0.4s ease-in-out; /* Smooth transition */
+}
+
+/* Remove sharp peg effect for smoothness */
+#nprogress .peg {
+  display: none;
+}
+
+/* Gradual fade-out effect */
+#nprogress .bar {
+  transition: width 1.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
