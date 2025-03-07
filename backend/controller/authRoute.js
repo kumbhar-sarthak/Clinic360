@@ -46,10 +46,12 @@ AuthRouter.post("/register", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .json({ user });
   } catch (error) {
@@ -101,10 +103,12 @@ AuthRouter.post("/register/doctor", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .json({ user, doctor });
   } catch (error) {
@@ -141,10 +145,12 @@ AuthRouter.post("/login", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none"
       })
       .json({ user });
   } catch (error) {
@@ -197,6 +203,7 @@ AuthRouter.post("/refresh", async (req, res) => {
       .cookie("accessToken",newAccessToken,{
         httpOnly: true,
         secure: true,
+        sameSite: "none"
       })
       .json({
         user
