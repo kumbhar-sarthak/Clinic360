@@ -4,33 +4,44 @@ import mongoose from "mongoose";
 import Doctor from "../models/DoctorModel.js";
 import Appointment from "../models/AppointmentModel.js";
 import authmiddleware from "../middleware/auth.middleware.js";
+import User from "../models/authModel.js";
+import dotenv from 'dotenv'
+import sendMail from "../utility/Mail.js";
+
+dotenv.config();
 
 const AppRouter = Router();
 
+AppRouter.post("/book", authmiddleware, async (req, res,) => {
+  const { doctorid, date, time, reason, _id } = req.body;
 
-AppRouter.post("/book", authmiddleware, async (req, res) => {
-  const { doctorid, date, time, reason } = req.body;
-
-  if ([doctorid, date, time, reason].some((i) => i === undefined || i === null)) {
+  if (![doctorid, date, time, reason].every(Boolean)) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   const session = await mongoose.startSession();
-  session.startTransaction(); 
+  session.startTransaction();
+
+  let transactionCommitted = false; 
 
   try {
-    const doctor = await Doctor.findOne({ userId: doctorid });
+    const doctor = await Doctor.findOne({ userId: doctorid }).session(session);
+    const patient = await User.findById(_id).session(session);
 
-    if (!doctor) {
-      throw new ThrowError(404, "Doctor not found");
+    if (!doctor || !patient) {
+      return new Error("Doctor or patient not found");
     }
 
-    const query = { doctorId: doctorid, date, time, reason, status: "Confirmed" };
+    const existingAppointment = await Appointment.findOne({
+      doctorId: doctorid,
+      date,
+      time,
+      reason,
+      status: "confirmed",
+    }).session(session);
 
-    const exist = await Appointment.findOne(query); 
-
-    if (exist) {
-      throw new ThrowError(409, "The appointment is already booked");
+    if (existingAppointment) {
+      return new Error("The appointment is already booked");
     }
 
     const appointment = new Appointment({
@@ -45,21 +56,38 @@ AppRouter.post("/book", authmiddleware, async (req, res) => {
     await appointment.save({ session });
 
     await session.commitTransaction();
+    transactionCommitted = true; 
     session.endSession();
+
+    const subject = "Appointment Booked - Get well Soon \u{1F490}\u{1F490}";
+    const html = `
+      <b>Appointment Details</b>
+      <br>
+      <b>Booking Time: ${time}</b>
+      <br>
+      <b>Booking Date: ${date}</b>
+      <br>
+      <b>Status: <span style="color: green;">confirmed</span></b>
+    `;
+
+    const mailSent = await sendMail(patient.email, subject, html);
+    if (!mailSent) {
+      return new Error("Failed to send confirmation email");
+    }
 
     return res.status(201).json({
       appointment,
       message: "Appointment is scheduled",
     });
   } catch (error) {
-    await session.abortTransaction(); 
+    if (!transactionCommitted && session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
     console.error("Error booking appointment:", error);
 
-    return res.status(500).json({
-      message: "Appointment not booked",
-      error: error.message,
-    });
+    return next(new ThrowError(500, "Appointment not booked", error));
+    
   }
 });
 
@@ -68,7 +96,7 @@ AppRouter.patch("/cancel/:id", authmiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(id).populate("patientId","email");
     if (!appointment) {
       return res.status(404).json({ message: "Invalid appointment ID" });
     }
@@ -76,30 +104,52 @@ AppRouter.patch("/cancel/:id", authmiddleware, async (req, res) => {
     appointment.status = "cancelled";
     await appointment.save();
 
+    const subject = "Appointment Canceled \u{274C}"
+    const html = 
+    `
+     <b>Appointment Details</b>
+     <br>
+     <b>Time - ${appointment.time}</b>
+     <br>
+     <b>Date - ${appointment.date}</b>
+     <br>
+     <b>Status - <span style="color: red;">cancelled</span></b>
+     <br>
+     <b>This Appointment was no longer, book new as needed</b>
+     <br>
+    `
+
+    const mail = sendMail(appointment.patientId?.email,subject,html);
+
+    if(!mail)
+      return new ThrowError(404,"Mail was not send");
+
     res.status(200).json({ message: "Appointment cancelled successfully", appointment });
   } catch (error) {
     console.error("Error cancelling appointment:", error);
-    res.status(500).json({ message: "Failed to cancel appointment", error: error.message });
+    return next(new ThrowError(500, "Failed to cancel appointment", error));
   }
 });
 
-
-
 AppRouter.get("/doctor/:doctorId",async (req,res)=>{
-  const doctorId = req.params;
-
-  const doctor = await Doctor.findById({userId: doctorId});
-
-  if(!doctor)
-    throw new ThrowError(404,"Invalid doctor ID")
-
-  const appointment = await Appointment.find({userId: doctorId}).populate("doctorId","name eamil");
-
-  res
-  .status(200)
-  .json({
-    appointment
-  })
+  try {
+    const doctorId = req.params;
+  
+    const doctor = await Doctor.findById({userId: doctorId});
+  
+    if(!doctor)
+      throw new ThrowError(404,"Invalid doctor ID")
+  
+    const appointment = await Appointment.find({userId: doctorId}).populate("doctorId","name eamil");
+  
+    res
+    .status(200)
+    .json({
+      appointment
+    })
+  } catch (error) {
+    return next(new ThrowError(500, "Doctor not find", error));
+  }
 })
 
 AppRouter.post("/all", async (req, res) => {
@@ -122,8 +172,7 @@ AppRouter.post("/all", async (req, res) => {
 
     res.status(200).json({ appointments });
   } catch (error) {
-    console.error("Error fetching appointments:", error);
-    res.status(500).json({ error: "Server error while fetching appointments" });
+    return next(new ThrowError(500, "Appointments not found", error));
   }
 });
 

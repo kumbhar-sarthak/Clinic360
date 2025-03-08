@@ -1,17 +1,20 @@
 import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Appointment = () => {
-  const { getappointment, bookAppointment } = useContext(AuthContext);
+  const { user, bookAppointment } = useContext(AuthContext);
   const [doctorId, setDoctorId] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [reason, setreason] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await bookAppointment(doctorId, date, time, reason);
+    await bookAppointment(doctorId, date, time, reason, user?._id);
     alert("Appointment booked successfully!");
+    navigate("/list-appointments",{ replace: true })
   };
 
   return (

@@ -3,7 +3,7 @@ import User from "../models/authModel.js";
 import jwt from "jsonwebtoken";
 import authmiddleware from "../middleware/auth.middleware.js";
 import ThrowError from "../utility/ErrorHandler.js";
-import Doctor from "../models/DoctorModel.js"
+import Doctor from "../models/DoctorModel.js";
 
 const AuthRouter = Router();
 
@@ -14,7 +14,7 @@ const generateTokens = async (user) => {
   return { AccessToken, RefreshToken };
 };
 
-AuthRouter.post("/register", async (req, res) => {
+AuthRouter.post("/register", async (req, res,next) => {
   const { name, email, password, role } = req.body;
 
   if ([name, email, password, role].some((i) => i === undefined || i === null))
@@ -46,26 +46,45 @@ AuthRouter.post("/register", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: 15 * 60 * 1000
+        sameSite: "lax",
+        maxAge: 15 * 60 * 1000,
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ user });
   } catch (error) {
-    throw new ThrowError(404, "User Registration Failed", error);
+    return next(new ThrowError(500, "Server Error", error));
   }
 });
 
-AuthRouter.post("/register/doctor", async (req, res) => {
-  const { name, email, password, role, specialty, experience,location, availability } = req.body;
+AuthRouter.post("/register/doctor", async (req, res,next) => {
+  const {
+    name,
+    email,
+    password,
+    role,
+    specialty,
+    experience,
+    location,
+    availability,
+  } = req.body;
 
-  
-  if ([name, email, password, role, specialty, experience,location,availability].some((i) => i === undefined || i === null))
+  if (
+    [
+      name,
+      email,
+      password,
+      role,
+      specialty,
+      experience,
+      location,
+      availability,
+    ].some((i) => i === undefined || i === null)
+  )
     throw new ThrowError(404, "The filed was missing");
 
   try {
@@ -86,9 +105,7 @@ AuthRouter.post("/register/doctor", async (req, res) => {
       experience,
       location,
       availability,
-    })
-
-    
+    });
 
     const { RefreshToken, AccessToken } = await generateTokens(user);
 
@@ -105,20 +122,20 @@ AuthRouter.post("/register/doctor", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none"
+        sameSite: "lax",
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none"
+        sameSite: "lax",
       })
       .json({ user, doctor });
   } catch (error) {
-    throw new ThrowError(404, "User Registration Failed", error);
+    return next(new ThrowError(500, "Server Error", error));
   }
 });
 
-AuthRouter.post("/login", async (req, res) => {
+AuthRouter.post("/login", async (req, res,next) => {
   const { email, password } = req.body;
 
   if (!email || !password)
@@ -147,26 +164,25 @@ AuthRouter.post("/login", async (req, res) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: 15 * 60 * 1000
+        sameSite: "lax",
+        maxAge: 15 * 60 * 1000,
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ user });
   } catch (error) {
-    throw new ThrowError(404, "Login Failed", error);
+    return next(new ThrowError(500, "Server Error", error));
   }
 });
 
 AuthRouter.post("/logout", async (req, res, next) => {
   try {
+    const refreshToken = req.cookies?.refreshToken;
 
-    const refreshToken  = req.cookies?.refreshToken;
-    
     if (!refreshToken) {
       return next(new ThrowError(404, "Refresh Token is required for logout"));
     }
@@ -180,62 +196,64 @@ AuthRouter.post("/logout", async (req, res, next) => {
 
     res
       .status(200)
-      .clearCookie("refreshToken", { httpOnly: true, secure: process.env.NODE_ENV === "production" })
-      .clearCookie("accessToken", { httpOnly: true, secure: process.env.NODE_ENV === "production" })
+      .clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      })
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      })
       .json({ message: "Logout Successful" });
-
   } catch (error) {
     console.error("Logout error:", error);
     return next(new ThrowError(500, "Server Error", error));
   }
 });
 
+AuthRouter.post("/refresh", async (req, res,next) => {
 
-AuthRouter.post("/refresh", async (req, res) => {
   const refreshToken = req.cookies?.refreshToken;
+
+  if (!refreshToken) {
+    return new ThrowError(404, "refresh Token required");
+  }
+
   const refreshtoken = refreshToken;
 
   try {
     const user = await User.findOne({ refreshtoken });
 
+    jwt.verify(refreshtoken, process.env.JWT_SEC, (err) => {
+      if (err) return new ThrowError(401, "refressh token not valid", err);
 
-    jwt.verify(refreshtoken, process.env.JWT_SEC, () => {
       const newAccessToken = user.generateAccessToken();
 
       res
-      .status(200)
-      .cookie("accessToken",newAccessToken,{
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 15 * 60 * 1000
-      })
-      .json({
-        user
-      })
+        .status(200)
+        .cookie("accessToken", newAccessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 15 * 60 * 1000,
+        })
+        .json({
+          user,
+        });
     });
   } catch (error) {
-    throw new ThrowError(404, "Refresh Failed", error);
+    return next(new ThrowError(500, "refresh Error", error));
   }
 });
 
-AuthRouter.get("/me", authmiddleware, async (req, res) => {
+
+AuthRouter.get("/profile", authmiddleware, async (req, res,next) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
     res.status(200).json(user);
   } catch (error) {
-    throw new ThrowError(404, "User Not Found", error);
+    return next(new ThrowError(500, "profile Error", error));
   }
 });
-
-AuthRouter.get("/profile", authmiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).select("-password");
-    res.status(200).json(user);
-  } catch (error) {
-    throw new ThrowError(404, "User Not Found", error);
-  }
-}
-);
 
 export default AuthRouter;

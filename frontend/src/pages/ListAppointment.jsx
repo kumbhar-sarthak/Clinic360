@@ -44,9 +44,10 @@ const ListAppointments = () => {
       if (response.ok) {
         setAppointments((prevAppointments) =>
           prevAppointments.map((appt) =>
-            appt._id === appointmentId ? { ...appt, status: "cancelled" } : appt
+            appt._id === i ? { ...appt, status: "cancelled" } : appt
           )
         );
+        window.location.reload();
       } else {
         console.error("Failed to cancel appointment:", data.message);
       }
@@ -55,29 +56,31 @@ const ListAppointments = () => {
     }
   };
 
+  const confirmedAppointments = appointments.filter(
+    (appointment) => appointment.status === "confirmed"
+  );
+  
   return (
     <div className="min-h-screen bg-blue-100 p-6">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         My Appointments
       </h2>
-
-      {appointments.length > 0 ? (
+  
+      {confirmedAppointments.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {appointments.map((appointment, index) => (
+          {confirmedAppointments.map((appointment, index) => (
             <div
               key={index}
               className="bg-white shadow-lg rounded-lg p-5 relative transition-all hover:scale-105"
             >
-              <h3 className="text-lg font-semibold text-blue-600 mb-2">
-                Doctor
-              </h3>
+              <h3 className="text-lg font-semibold text-blue-600 mb-2">Doctor</h3>
               <p className="text-gray-800">
                 <strong>Name:</strong> {appointment.doctorId?.name || "N/A"}
               </p>
               <p className="text-gray-700">
                 <strong>Email:</strong> {appointment.doctorId?.email || "N/A"}
               </p>
-
+  
               <h3 className="text-lg font-semibold text-green-600 mt-3">
                 Patient
               </h3>
@@ -87,7 +90,7 @@ const ListAppointments = () => {
               <p className="text-gray-700">
                 <strong>Email:</strong> {appointment.patientId?.email || "N/A"}
               </p>
-
+  
               <h3 className="text-lg font-semibold text-purple-600 mt-3">
                 Details
               </h3>
@@ -98,39 +101,32 @@ const ListAppointments = () => {
               <p className="text-gray-700">
                 <strong>Reason:</strong> {appointment.reason || "N/A"}
               </p>
-
+  
               <p className="text-gray-700">
                 <strong>Status:</strong>{" "}
-                <span
-                  className={`font-bold ${
-                    appointment.status === "cancelled"
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }`}
-                >
+                <span className="font-bold text-green-600">
                   {appointment.status}
                 </span>
               </p>
-
-              {user?.role === "patient" &&
-                appointment.status !== "cancelled" && (
-                  <div className="mt-4">
-                    <button
-                      className="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
-                      onClick={() => handleCancel(appointment._id)}
-                    >
-                      Cancel Appointment
-                    </button>
-                  </div>
-                )}
+  
+              {user?.role === "patient" && (
+                <div className="mt-4">
+                  <button
+                    className="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                    onClick={() => handleCancel(appointment._id)}
+                  >
+                    Cancel Appointment
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-600">No appointments found</div>
+        <div className="text-center text-gray-600">No confirmed appointments found</div>
       )}
     </div>
   );
-};
+}  
 
 export default ListAppointments;

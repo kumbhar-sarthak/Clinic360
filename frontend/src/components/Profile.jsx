@@ -56,7 +56,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row justify-around items-center bg-white shadow-md rounded-lg p-6">
       <img
-        src="https://www.sonicseo.com/wp-content/uploads/2020/07/surgeon-768x768.jpg"
+        src="/Men_Avatar.webp"
         alt="Profile"
         className="w-40 h-40 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full object-cover mb-4 md:mb-0"
       />
@@ -74,7 +74,7 @@ const Profile = () => {
               {doctorInfo.specialty}
             </p>
 
-            {/* Location Section */}
+            
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:space-x-6 mt-4">
               <p className="text-gray-700 text-sm sm:text-base md:text-lg">
                 <span className="font-medium">Location:</span> {doctorInfo.location}
@@ -107,7 +107,6 @@ const Profile = () => {
               )}
             </div>
 
-            {/* Availability Section */}
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:space-x-6 mt-4">
               <p className="text-gray-700 text-sm sm:text-base md:text-lg">
                 <span className="font-medium">Available:</span> {doctorInfo.availability}

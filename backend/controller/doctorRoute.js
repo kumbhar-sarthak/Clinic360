@@ -18,9 +18,7 @@ DoctorRouter.get("/me", async (req, res) => {
 
     res.status(200).json({ doctor });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Server Error while finding Doctor", error });
+    return next(new ThrowError(500, "Server Error", error));
   }
 });
 
@@ -48,24 +46,28 @@ DoctorRouter.post("/search", authmiddleware, async (req, res) => {
       (i) => i === undefined || i === null
     )
   )
-    throw new ThrowError(404, "fileds are missing");
+    return new ThrowError(404, "fileds are missing");
 
-  const filters = [];
-
-  if (speciality) filters.unshift({ speciality });
-  if (location) filters.push({ location });
-  if (experience) filters.push({ experience });
-  if (availability) filters.push({ availability });
-
-  const query = filters.length > 0 ? { $or: filters } : {}
-
-  const doctors = await Doctor.find(query).sort({ speciality: -1});
-
-  if (!doctors) throw new ThrowError(404, "Doctor Not Found");
-
-  res.status(200).json({
-    doctors,
-  });
+try {
+    const filters = [];
+  
+    if (speciality) filters.unshift({ speciality });
+    if (location) filters.push({ location });
+    if (experience) filters.push({ experience });
+    if (availability) filters.push({ availability });
+  
+    const query = filters.length > 0 ? { $or: filters } : {}
+  
+    const doctors = await Doctor.find(query).sort({ speciality: -1});
+  
+    if (!doctors) return new ThrowError(404, "Doctor Not Found");
+  
+    res.status(200).json({
+      doctors,
+    });
+} catch (error) {
+    return next(new ThrowError(500, "Server Error", error));
+}
 });
 
 DoctorRouter.post("/available", authmiddleware, async (req, res) => {
@@ -74,7 +76,7 @@ DoctorRouter.post("/available", authmiddleware, async (req, res) => {
     await Doctor.findByIdAndUpdate(doctorId, { availability });
     res.json({ msg: "Availability updated" });
   } catch (err) {
-    res.status(500).send("Server Error");
+    return next(new ThrowError(500, "Server Error", error));
   }
 });
 
@@ -97,11 +99,11 @@ DoctorRouter.put("/:doctorId",authmiddleware,async (req,res)=>{
     );
 
     if(!updatedDoctor)
-      throw new ThrowError(404,"Doctor not updated");
+      return new ThrowError(404,"Doctor not updated");
   
     res.status(200).json({ success: true, doctor: updatedDoctor });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update doctor info" });
+    return next(new ThrowError(500, "Failed to update doctor info", error));
   }
 })
 

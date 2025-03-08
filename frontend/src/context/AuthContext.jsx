@@ -13,8 +13,6 @@ export const AuthProvider = ({ children }) => {
   
 
   const refresh = async () => {
-    if (!isLogin) return;
-
     try {
       const res = await fetch(`${API_URL}/auth/refresh`, {
         method: "POST",
@@ -35,14 +33,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (!isLogin) return;
 
+  useEffect(() => {
     refresh();
     const interval = setInterval(refresh, 1000 * 60 * 10);
 
     return () => clearInterval(interval);
-  }, [isLogin]);
+  }, []);
 
   const login = async (email, password) => {
     try {
@@ -56,8 +53,8 @@ export const AuthProvider = ({ children }) => {
       if (!res.ok) throw new Error("Login failed");
 
       const data = await res.json();
-      setUser(data.user);
       setIsLogin(true);
+      setUser(data.user);
       setIsRegister(true);
     } catch (error) {
       console.error("Login error:", error);
@@ -127,12 +124,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const bookAppointment = async (doctorid, date, time, reason) => {
+  const bookAppointment = async (doctorid, date, time, reason, _id) => {
     try {
       const res = await fetch(`${API_URL}/appointment/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ doctorid, date, time, reason }),
+        body: JSON.stringify({ doctorid, date, time, reason, _id }),
         credentials: "include",
       });
 

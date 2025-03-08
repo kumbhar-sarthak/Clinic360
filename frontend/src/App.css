@@ -6,6 +6,7 @@ body{
 
 .custom{
   animation: fade 1s ;
+  text-align: center;
 }
 
 @keyframes fade {
