@@ -53,6 +53,11 @@ This is a full-stack application that allows users to do Search for Doctors and 
       6. HOST
       7. ORIGIN
       8. NODE_ENV (production || devlopment )
+      9. MY_MAIL
+      10. MY_MAIL_PASS
+
+      ```sh
+         use hti properly NODE_ENV=development
 
 4. Now run the script
    ```sh
@@ -134,3 +139,4 @@ Contributions are welcome! To contribute:
 3. Commit your changes (`git commit -m "Add new feature"`).
 4. Push to the branch (`git push origin new-branch`).
 5. Open a Pull Request.
+
