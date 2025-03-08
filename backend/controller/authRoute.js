@@ -46,13 +46,13 @@ AuthRouter.post("/register", async (req, res,next) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
         maxAge: 15 * 60 * 1000,
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ user });
@@ -122,12 +122,12 @@ AuthRouter.post("/register/doctor", async (req, res,next) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
       })
       .json({ user, doctor });
   } catch (error) {
@@ -164,13 +164,13 @@ AuthRouter.post("/login", async (req, res,next) => {
       .cookie("refreshToken", RefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
         maxAge: 15 * 60 * 1000,
       })
       .cookie("accessToken", AccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ user });
@@ -234,7 +234,7 @@ AuthRouter.post("/refresh", async (req, res,next) => {
         .cookie("accessToken", newAccessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
+          sameSite: "none",
           maxAge: 15 * 60 * 1000,
         })
         .json({
