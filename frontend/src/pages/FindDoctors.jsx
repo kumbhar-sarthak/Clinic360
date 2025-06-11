@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   TextField,
   Button,
@@ -10,11 +10,19 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
+import AuthContext from "../context/AuthContext";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Navigate } from "react-router";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
 const FindDoctors = () => {
   
+  const { isLogin } = useContext(AuthContext);
+
+  if(!isLogin){
+   return <Navigate to='/login' replace/>
+  }
 
   const [filters, setFilters] = useState({
     location: "",
@@ -57,7 +65,15 @@ const FindDoctors = () => {
     return 0;
   });
 
+  const darktheme =createTheme({
+    palette:{
+      mode: "dark"
+    }
+  })
+
   return (
+    <div className="mt-16">
+      <ThemeProvider theme={darktheme}>
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Card sx={{ p: 3, mb: 4 }}>
         <Grid container spacing={2}>
@@ -203,7 +219,8 @@ const FindDoctors = () => {
           No doctors found. Please search.
         </Typography>
       )}
-    </Container>
+    </Container></ThemeProvider>
+    </div>
   );
 };
 

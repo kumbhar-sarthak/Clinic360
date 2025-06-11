@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { TextField, Grid, Button, MenuItem, Typography, Box, Paper } from "@mui/material";
 import AuthContext from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +15,7 @@ const Register = () => {
     location: "",
     availability: "",
   });
+  console.log(formData)
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -47,122 +49,161 @@ const Register = () => {
   }, [isRegister, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md md:max-w-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <Box minHeight="100vh" display="flex" justifyContent="center" alignItems="center" p={2}>
+      <Paper elevation={4} sx={{ p: 4, width: "100%", maxWidth: 700, bgcolor: "black", color: "white" }}>
+        <Typography variant="h4" align="center" className="float-left mb-2">
+          Start You Booking,
+        </Typography>
 
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {error && (
+          <Typography color="error" align="center" gutterBottom>
+            {error}
+          </Typography>
+        )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1">Username</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="filled"
+                label="Username"
+                name="name"
+                fullWidth
+                required
+                value={formData.name}
+                onChange={handleChange}
+                InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+                autoComplete="off"
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="filled"
+                label="Email"
+                name="email"
+                type="email"
+                fullWidth
+                required
+                value={formData.email}
+                onChange={handleChange}
+                InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+                autoComplete="off"
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="filled"
+                label="Password"
+                name="password"
+                type="password"
+                fullWidth
+                required
+                value={formData.password}
+                onChange={handleChange}
+                InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+                autoComplete="off"
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1">Role</label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            >
-              <option value="">Select a Role</option>
-              <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
-            </select>
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                select
+                variant="filled"
+                label="Role"
+                name="role"
+                fullWidth
+                required
+                value={formData.role}
+                onChange={handleChange}
+                InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+                autoComplete="off"
+              >
+                <MenuItem value="">Select a Role</MenuItem>
+                <MenuItem value="patient">Patient</MenuItem>
+                <MenuItem value="doctor">Doctor</MenuItem>
+              </TextField>
+            </Grid>
 
-          {formData.role === "doctor" && (
-            <>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">Specialization</label>
-                <input
-                  type="text"
-                  name="specialty"
-                  value={formData.specialty}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">Experience</label>
-                <input
-                  type="text"
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-1">Availability</label>
-                <input
-                  type="text"
-                  name="availability"
-                  value={formData.availability}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  required
-                />
-              </div>
-            </>
-          )}
+            {formData.role === "doctor" && (
+              <>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="filled"
+                    label="Specialization"
+                    name="specialty"
+                    fullWidth
+                    required
+                    value={formData.specialty}
+                    onChange={handleChange}
+                    InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                    InputLabelProps={{ style: { color: "#bbb" } }}
+                  />
+                </Grid>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            Register
-          </button>
-        </form>
-      </div>
-    </div>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="filled"
+                    label="Experience"
+                    name="experience"
+                    fullWidth
+                    required
+                    value={formData.experience}
+                    onChange={handleChange}
+                    InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                    InputLabelProps={{ style: { color: "#bbb" } }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="filled"
+                    label="Location"
+                    name="location"
+                    fullWidth
+                    required
+                    value={formData.location}
+                    onChange={handleChange}
+                    InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                    InputLabelProps={{ style: { color: "#bbb" } }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="filled"
+                    label="Availability"
+                    name="availability"
+                    fullWidth
+                    required
+                    value={formData.availability}
+                    onChange={handleChange}
+                    InputProps={{ style: { backgroundColor: "#2c2c2c", color: "white" } }}
+                    InputLabelProps={{ style: { color: "#bbb" } }}
+                  />
+                </Grid>
+              </>
+            )}
+
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 2, py: 1.5, bgcolor: "#21848b", fontWeight: "bold" }}
+              >
+                Register
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

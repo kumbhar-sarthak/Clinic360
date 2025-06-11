@@ -1,12 +1,20 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import AuthContext from "../context/AuthContext";
+import { Navigate } from "react-router";
 
 const Profile = () => {
-  const { getDoctorInfo, updateDoctorInfo, user } = useContext(AuthContext);
+  const { getDoctorInfo, updateDoctorInfo, user, isLogin } =
+    useContext(AuthContext);
   const [doctorInfo, setDoctorInfo] = useState(null);
-  
 
-  const [isEditing, setIsEditing] = useState({ location: false, availability: false });
+  if (!isLogin) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const [isEditing, setIsEditing] = useState({
+    location: false,
+    availability: false,
+  });
   const [newData, setNewData] = useState({ location: "", availability: "" });
 
   const popoverRef = useRef(null);
@@ -33,7 +41,6 @@ const Profile = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
   const handleSave = async (field) => {
     try {
       const updatedValue = newData[field] || doctorInfo[field];
@@ -41,7 +48,7 @@ const Profile = () => {
       console.log(doctorInfo?._id);
 
       await updateDoctorInfo(doctorInfo?._id, { [field]: updatedValue });
-   
+
       setDoctorInfo((prev) => ({
         ...prev,
         [field]: updatedValue,
@@ -54,7 +61,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row justify-around items-center bg-white shadow-md rounded-lg p-6">
+    <div className="min-h-screen flex flex-col md:flex-row justify-around items-center tex-white shadow-md rounded-lg p-6">
       <img
         src="/Men_Avatar.webp"
         alt="Profile"
@@ -74,32 +81,47 @@ const Profile = () => {
               {doctorInfo.specialty}
             </p>
 
-            
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:space-x-6 mt-4">
               <p className="text-gray-700 text-sm sm:text-base md:text-lg">
-                <span className="font-medium">Location:</span> {doctorInfo.location}
+                <span className="font-medium">Location:</span>{" "}
+                {doctorInfo.location}
               </p>
               <button
-                onClick={() => setIsEditing({ location: true, availability: false })}
+                onClick={() =>
+                  setIsEditing({ location: true, availability: false })
+                }
                 className="bg-[#6794ab] text-white px-4 py-1 rounded-md cursor-pointer transition hover:bg-[#4f7a94]"
               >
                 Change
               </button>
 
               {isEditing.location && (
-                <div ref={popoverRef} className="absolute top-12 left-0 bg-white shadow-md p-4 rounded-lg w-64 z-10">
+                <div
+                  ref={popoverRef}
+                  className="absolute top-12 left-0 bg-white shadow-md p-4 rounded-lg w-64 z-10"
+                >
                   <input
                     type="text"
                     placeholder="Enter new location"
                     value={newData.location}
-                    onChange={(e) => setNewData({ ...newData, location: e.target.value })}
+                    onChange={(e) =>
+                      setNewData({ ...newData, location: e.target.value })
+                    }
                     className="border border-gray-300 rounded-md p-2 w-full"
                   />
                   <div className="flex justify-end mt-2 space-x-2">
-                    <button onClick={() => setIsEditing({ ...isEditing, location: false })} className="text-gray-600">
+                    <button
+                      onClick={() =>
+                        setIsEditing({ ...isEditing, location: false })
+                      }
+                      className="text-gray-600"
+                    >
                       Cancel
                     </button>
-                    <button onClick={() => handleSave("location")} className="bg-blue-500 text-white px-3 py-1 rounded-md">
+                    <button
+                      onClick={() => handleSave("location")}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md"
+                    >
                       Save
                     </button>
                   </div>
@@ -109,29 +131,45 @@ const Profile = () => {
 
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:space-x-6 mt-4">
               <p className="text-gray-700 text-sm sm:text-base md:text-lg">
-                <span className="font-medium">Available:</span> {doctorInfo.availability}
+                <span className="font-medium">Available:</span>{" "}
+                {doctorInfo.availability}
               </p>
               <button
-                onClick={() => setIsEditing({ location: false, availability: true })}
+                onClick={() =>
+                  setIsEditing({ location: false, availability: true })
+                }
                 className="bg-[#c3a4cf] text-white px-4 py-1 rounded-md cursor-pointer transition hover:bg-[#a88cb5]"
               >
                 Change
               </button>
 
               {isEditing.availability && (
-                <div ref={popoverRef} className="absolute top-12 left-0 bg-white shadow-md p-4 rounded-lg w-64 z-10">
+                <div
+                  ref={popoverRef}
+                  className="absolute top-12 left-0 bg-white shadow-md p-4 rounded-lg w-64 z-10"
+                >
                   <input
                     type="text"
                     placeholder="Enter new availability"
                     value={newData.availability}
-                    onChange={(e) => setNewData({ ...newData, availability: e.target.value })}
+                    onChange={(e) =>
+                      setNewData({ ...newData, availability: e.target.value })
+                    }
                     className="border border-gray-300 rounded-md p-2 w-full"
                   />
                   <div className="flex justify-end mt-2 space-x-2">
-                    <button onClick={() => setIsEditing({ ...isEditing, availability: false })} className="text-gray-600">
+                    <button
+                      onClick={() =>
+                        setIsEditing({ ...isEditing, availability: false })
+                      }
+                      className="text-gray-600"
+                    >
                       Cancel
                     </button>
-                    <button onClick={() => handleSave("availability")} className="bg-green-500 text-white px-3 py-1 rounded-md">
+                    <button
+                      onClick={() => handleSave("availability")}
+                      className="bg-green-500 text-white px-3 py-1 rounded-md"
+                    >
                       Save
                     </button>
                   </div>

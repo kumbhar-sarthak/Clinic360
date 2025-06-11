@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="text-black p-4 shadow-lg bg-white relative">
+    <nav className="text-black p-4  text-white absolute top-0 w-full z-999">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <Link to="/" className="text-2xl font-bold title">
@@ -65,7 +65,7 @@ const Navbar = () => {
             </button>
           ) : (
             <>
-              <Link to="/">Login</Link>
+              <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
             </>
           )}
@@ -75,7 +75,7 @@ const Navbar = () => {
       </div>
 
       <div
-        className={`sm:hidden fixed top-0 left-0 w-full bg-white shadow-lg transition-transform duration-300 ease-in-out ${
+        className={`sm:hidden fixed top-0 left-0 w-full bg-black text-white shadow-lg transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
         style={{ height: "-webkit-fill-available", zIndex: 10, }}

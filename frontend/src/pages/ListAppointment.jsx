@@ -1,13 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import { Navigate } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ListAppointments = () => {
-  const { user } = useContext(AuthContext);
+  const { user, isLogin } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
 
-  
+
+  if(!isLogin){
+    return <Navigate to='/login' replace/>
+  }
 
   useEffect(() => {
     if (!user?._id) return;
@@ -61,8 +65,8 @@ const ListAppointments = () => {
   );
   
   return (
-    <div className="min-h-screen bg-blue-100 p-6">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+    <div className="min-h-[100dvh] text-white pt-26">
+      <h2 className="text-2xl font-bold text-center mb-6">
         My Appointments
       </h2>
   
@@ -71,9 +75,9 @@ const ListAppointments = () => {
           {confirmedAppointments.map((appointment, index) => (
             <div
               key={index}
-              className="bg-white shadow-lg rounded-lg p-5 relative transition-all hover:scale-105"
+              className="border border-white text-white shadow-lg rounded-lg p-5 relative transition-all hover:scale-105"
             >
-              <h3 className="text-lg font-semibold text-blue-600 mb-2">Doctor</h3>
+              <h3 className="text-lg font-semibold text-blue-400 mb-2">Doctor</h3>
               <p className="text-gray-800">
                 <strong>Name:</strong> {appointment.doctorId?.name || "N/A"}
               </p>
@@ -81,7 +85,7 @@ const ListAppointments = () => {
                 <strong>Email:</strong> {appointment.doctorId?.email || "N/A"}
               </p>
   
-              <h3 className="text-lg font-semibold text-green-600 mt-3">
+              <h3 className="text-lg font-semibold text-green-400 mt-3">
                 Patient
               </h3>
               <p className="text-gray-800">
@@ -91,7 +95,7 @@ const ListAppointments = () => {
                 <strong>Email:</strong> {appointment.patientId?.email || "N/A"}
               </p>
   
-              <h3 className="text-lg font-semibold text-purple-600 mt-3">
+              <h3 className="text-lg font-semibold text-purple-400 mt-3">
                 Details
               </h3>
               <p className="text-gray-700">

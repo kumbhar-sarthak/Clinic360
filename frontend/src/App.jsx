@@ -1,4 +1,5 @@
 import "./App.css";
+import "./nprogress-custom.css"
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NProgress from "nprogress";
@@ -13,7 +14,7 @@ import FindDoctors from "./pages/FindDoctors.jsx";
 import Appointment from "./pages/Appointment.jsx";
 import ListAppointments from "./pages/ListAppointment.jsx";
 
-NProgress.configure({ showSpinner: false, speed: 500, easing: "ease-in-out" });
+NProgress.configure({ showSpinner: false, speed: 500, easing: "ease-in-out", });
 
 const AppContent = () => {
   const location = useLocation();
@@ -33,13 +34,13 @@ const AppContent = () => {
 
   return loading ? null : (
     <Routes>
-      <Route path="/home" element={<Home />} />
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/search/doctors" element={<FindDoctors />} />
-      <Route path="/book-appointment" element={<Appointment />} />
-      <Route path="/list-appointments" element={<ListAppointments />} />
+      <Route path="/profile" element={<ProfilePage />} /> 
+      <Route path="/search/doctors" element={<FindDoctors />} /> 
+      <Route path="/book-appointment" element={<Appointment />} /> 
+      <Route path="/list-appointments" element={<ListAppointments />} /> 
     </Routes>
   );
 };
