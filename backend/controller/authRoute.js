@@ -16,7 +16,7 @@ const generateTokens = async (user) => {
 
 AuthRouter.post("/register", async (req, res,next) => {
   const { name, email, password, role } = req.body;
-
+  
   if ([name, email, password, role].some((i) => i === undefined || i === null))
     throw new ThrowError(404, "The filed was missing");
 
@@ -25,7 +25,7 @@ AuthRouter.post("/register", async (req, res,next) => {
 
     if (user) throw new ThrowError(404, "User Already Exisit !!");
 
-    user = new User({
+    user = await User.create({
       name,
       email,
       password,
