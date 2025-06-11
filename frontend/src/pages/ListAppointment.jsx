@@ -36,7 +36,6 @@ const ListAppointments = () => {
   }, [user?._id]);
 
   const handleCancel = async (i) => {
-    console.log(i);
     try {
       const response = await fetch(`${API_URL}/appointment/cancel/${i}`, {
         method: "PATCH",
@@ -71,11 +70,11 @@ const ListAppointments = () => {
       </h2>
   
       {confirmedAppointments.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
           {confirmedAppointments.map((appointment, index) => (
             <div
               key={index}
-              className="border border-white text-white shadow-lg rounded-lg p-5 relative transition-all hover:scale-105"
+              className="border border-white text-white shadow-lg rounded-lg p-5 relative transition-all"
             >
               <h3 className="text-lg font-semibold text-blue-400 mb-2">Doctor</h3>
               <p className="text-gray-800">

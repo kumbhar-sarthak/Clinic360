@@ -45,8 +45,6 @@ const Profile = () => {
     try {
       const updatedValue = newData[field] || doctorInfo[field];
 
-      console.log(doctorInfo?._id);
-
       await updateDoctorInfo(doctorInfo?._id, { [field]: updatedValue });
 
       setDoctorInfo((prev) => ({
@@ -68,7 +66,7 @@ const Profile = () => {
         className="w-40 h-40 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full object-cover mb-4 md:mb-0"
       />
       <div className="text-center md:text-left">
-        <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white">
           {user?.name}
         </h2>
         <p className="text-blue-600 mt-2 text-sm sm:text-base md:text-lg">

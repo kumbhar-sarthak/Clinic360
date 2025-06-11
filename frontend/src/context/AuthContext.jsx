@@ -159,7 +159,6 @@ export const AuthProvider = ({ children }) => {
       }
 
       setProfile(result.doctor);
-      console.log("Doctor updated successfully:", result);
       return result;
     } catch (error) {
       console.error("Update doctor info error:", error);

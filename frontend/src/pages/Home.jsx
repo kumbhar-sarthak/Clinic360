@@ -1,9 +1,9 @@
 const Home = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      <div className="blob w-[600px] h-[600px] top-[-100px] left-[-100px] bg-blue-600" />
+      <div className="blob w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] top-[-100px] left-[-100px] bg-blue-800" />
 
-      <div className="blob w-[500px] h-[500px] bottom-[-150px] right-[-150px] bg-blue-800" />
+      <div className="blob w-[40vw] h-[40vw] bottom-[-150px] right-[-150px] bg-blue-800" />
 
       <div className="blob w-[450px] h-[450px] top-[30%] left-[50%] bg-[#6EACDA]" />
 

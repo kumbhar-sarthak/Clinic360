@@ -30,7 +30,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isLogin) {
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     }
   }, [isLogin, navigate]);
 
@@ -45,7 +45,6 @@ const Login = () => {
           <div className="mb-8">
             <ThemeProvider theme={darkTheme}>
               <TextField
-                id="outlined-basic"
                 label="Email"
                 variant="outlined"
                 type="email"
@@ -61,7 +60,6 @@ const Login = () => {
           <div className="mb-6 ">
             <ThemeProvider theme={darkTheme}>
               <TextField
-                id="outlined-basic"
                 type="password"
                 label="Password"
                 variant="outlined"

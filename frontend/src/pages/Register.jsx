@@ -15,7 +15,6 @@ const Register = () => {
     location: "",
     availability: "",
   });
-  console.log(formData)
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -44,14 +43,14 @@ const Register = () => {
 
   useEffect(() => {
     if (isRegister) {
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
     }
   }, [isRegister, navigate]);
 
   return (
     <Box minHeight="100vh" display="flex" justifyContent="center" alignItems="center" p={2}>
-      <Paper elevation={4} sx={{ p: 4, width: "100%", maxWidth: 700, bgcolor: "black", color: "white" }}>
-        <Typography variant="h4" align="center" className="float-left mb-2">
+      <Paper elevation={4} sx={{ p: 4, width: "100%", maxWidth: 700, bgcolor: "black", color: "white" }} className="mt-20 md:mt-0">
+        <Typography variant="h4" align="center" className="float-left mb-2 mt-6">
           Start You Booking,
         </Typography>
 

@@ -43,7 +43,7 @@ const Navbar = () => {
           {menuOpen ? (
             <span className="text-2xl">✖</span>
           ) : (
-            <span className="text-2xl">☰</span>
+            <span className="text-2xl text-white">☰</span>
           )}
         </button>
 
@@ -61,7 +61,7 @@ const Navbar = () => {
               className="text-red-600 cursor-pointer"
               disabled={isLoggingOut}
             >
-              {isLoggingOut ? "Logging out..." : "Logout"}
+              {isLoggingOut ? window.location.reload() : "Logout"}
             </button>
           ) : (
             <>
