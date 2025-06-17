@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router";
+
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <div className="blob w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] top-[-100px] left-[-100px] bg-blue-800" />
@@ -7,7 +11,10 @@ const Home = () => {
 
       <div className="blob w-[450px] h-[450px] top-[30%] left-[50%] bg-[#6EACDA]" />
 
-      <div id="text-animation" className="w-full text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
+      <div
+        id="text-animation"
+        className="w-full text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
+      >
         <h1 className="text-[8vw] md:text-[4vw] font-medium">
           Book Appointment
         </h1>
@@ -15,12 +22,12 @@ const Home = () => {
           One Solution for online appointment booking
         </p>
         <div className="space-x-3 mt-8">
-          <a href="/book-appointment">
-          <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer">Book</button>
-          </a>
-          <a href="/list-appointments">
-          <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer">Check</button>
-          </a>
+            <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer" onClick={() => navigate('/book-appointment')}>
+              Book
+            </button>
+            <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer" onClick={() => navigate('/list-appointments')}>
+              Check
+            </button>
         </div>
       </div>
     </div>
