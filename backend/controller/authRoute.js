@@ -163,13 +163,13 @@ AuthRouter.post("/login", async (req, res,next) => {
     res
       .status(200)
       .cookie("refreshToken", RefreshToken, {
-        httpOnly: true,
+        httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "none",
         maxAge: 15 * 60 * 1000,
       })
       .cookie("accessToken", AccessToken, {
-        httpOnly: true,
+        httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,

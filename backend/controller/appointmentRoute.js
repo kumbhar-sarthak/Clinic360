@@ -50,7 +50,7 @@ AppRouter.post("/book", authmiddleware, async (req, res, next) => {
 
     const appointment = new Appointment({
       doctorId: doctorid,
-      patientId: req.user?._id,
+      patientId: _id,
       date,
       time,
       status: "confirmed",
@@ -65,10 +65,34 @@ AppRouter.post("/book", authmiddleware, async (req, res, next) => {
 
     const subject = "Appointment Booked - Get well Soon 💐💐";
     const html = `
-      <b>Appointment Details</b><br>
-      <b>Booking Time: ${time}</b><br>
-      <b>Booking Date: ${date}</b><br>
-      <b>Status: <span style="color: green;">confirmed</span></b>
+      <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
+  <h2 style="color: #2c3e50; text-align: center;">📅 Appointment Confirmation</h2>
+  
+  <p style="font-size: 16px;">Hello,</p>
+  <p style="font-size: 16px;">
+    Your appointment has been successfully <strong style="color: green;">confirmed</strong>. Below are the details:
+  </p>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+    <tr>
+      <td style="padding: 8px; font-weight: bold;">🕒 Time:</td>
+      <td style="padding: 8px;">${time}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold;">📅 Date:</td>
+      <td style="padding: 8px;">${date}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; font-weight: bold;">📌 Status:</td>
+      <td style="padding: 8px;"><span style="color: green; font-weight: bold;">Confirmed</span></td>
+    </tr>
+  </table>
+
+  <p style="margin-top: 20px; font-size: 15px;">Please arrive 10 minutes before your scheduled time. If you have any questions, feel free to reply to this email.</p>
+
+  <p style="font-size: 14px; color: #555;">Thank you,<br>The Clinic360 Team</p>
+</div>
+
     `;
 
     const mailSent = await sendMail(patient.email, subject, html);
