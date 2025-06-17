@@ -23,7 +23,7 @@ AuthRouter.post("/register", async (req, res,next) => {
   try {
     let user = await User.findOne({ email });
 
-    if (user) throw new ThrowError(404, "User Already Exisit !!");
+    if (!user) throw new ThrowError(404, "User Already Exisit !!");
 
     user = await User.create({
       name,
