@@ -16,7 +16,6 @@ const darktheme = createTheme({
 
 const Appointment = () => {
   const { user, bookAppointment, isLogin, getdoctorId } = useContext(AuthContext);
-  const [doctorId, setDoctorId] = useState("");
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [reason, setReason] = useState("");
@@ -39,7 +38,7 @@ const Appointment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await bookAppointment(
-      doctorId,
+      getdoctorId,
       date?.toISOString(),
       time?.format("HH:mm"),
       reason,
@@ -62,7 +61,6 @@ const Appointment = () => {
                 label="Doctor ID"
                 variant="outlined"
                 value={getdoctorId}
-                onChange={(e) => setDoctorId(e.target.value)}
                 fullWidth
                 slotProps={{
                   input: {
