@@ -39,8 +39,6 @@ const Login = () => {
       <div className="text-white p-8 rounded shadow-md w-full max-w-md ">
         <h2 className="text-3xl font-medium mb-8">Welcome Back !</h2>
 
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
         <form onSubmit={handleSubmit}>
           <div className="mb-8">
             <ThemeProvider theme={darkTheme}>
@@ -80,6 +78,7 @@ const Login = () => {
               Login
             </button>
           </div>
+          {error && <p className="text-red-900 text-center mt-4">{error}</p>}
         </form>
       </div>
       <div className="hidden md:block w-2/7 h-[80vh] bg-[url('https://images.pexels.com/photos/3957986/pexels-photo-3957986.jpeg?auto=compress&cs=tinysrgb&w=3840')] bg-cover bg-center rounded-xl mt-12">

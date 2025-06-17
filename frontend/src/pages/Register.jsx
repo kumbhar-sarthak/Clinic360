@@ -54,13 +54,7 @@ const Register = () => {
           Start You Booking,
         </Typography>
 
-        {error && (
-          <Typography color="error" align="center" gutterBottom>
-            {error}
-          </Typography>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit} >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -201,6 +195,11 @@ const Register = () => {
             </Grid>
           </Grid>
         </Box>
+        {error && (
+          <Typography className="text-red-900 pt-4" align="center" gutterBottom>
+            {error}
+          </Typography>
+        )}
       </Paper>
     </Box>
   );
