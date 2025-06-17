@@ -9,6 +9,9 @@ body {
   animation: move 2s;
 }
 
+
+
+
 @keyframes move {
   0%{
     transform: translateY(20%);

@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -22,12 +25,20 @@ const Home = () => {
           One Solution for online appointment booking
         </p>
         <div className="space-x-3 mt-8">
-            <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer" onClick={() => navigate('/book-appointment')}>
-              Book
+          {user?.role !== "doctor" && (
+            <button
+              className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer"
+              onClick={() => navigate("/search/doctors")}
+            >
+              Search
             </button>
-            <button className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer" onClick={() => navigate('/list-appointments')}>
-              Check
-            </button>
+          )}
+          <button
+            className="border border-gray-200 w-[100px] h-[50px] rounded-3xl cursor-pointer"
+            onClick={() => navigate("/list-appointments")}
+          >
+            Check
+          </button>
         </div>
       </div>
     </div>

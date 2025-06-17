@@ -28,12 +28,6 @@ const Navbar = () => {
           <Link to="/" className="text-2xl font-bold title">
             Clinic360
           </Link>
-
-          { isLogin  ? (
-            <Link to="/search/doctors">Doctors</Link>
-          ): ""}
-
-          
         </div>
 
         <button
@@ -48,17 +42,10 @@ const Navbar = () => {
         </button>
 
         <div className="hidden sm:flex space-x-4">
-          {isLogin  ? (
-            <>
-              <Link to="/list-appointments">List Appointments</Link>
-              {user?.role !== "doctor" && <Link to="/book-appointment">Appointments</Link>}
-            </>
-          ) : ""}
-
           {user && isLogin ? (
             <button
               onClick={handleLogout}
-              className="text-red-600 cursor-pointer"
+              className="text-[#8E1616] cursor-pointer"
               disabled={isLoggingOut}
             >
               {isLoggingOut ? window.location.reload() : "Logout"}
@@ -66,7 +53,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
+              <Link to="/register">Signup</Link>
             </>
           )}
 
@@ -87,13 +74,6 @@ const Navbar = () => {
           >
             ✖
           </button>
-
-          {isLogin  ? (
-            <>
-              <Link to="/list-appointments">List Appointments</Link>
-              {user?.role !== "doctor" && <Link to="/book-appointment">Appointments</Link>}
-            </>
-          ) : ""}
           
           {user ? (
             <button
@@ -112,7 +92,7 @@ const Navbar = () => {
                 Login
               </Link>
               <Link to="/register" onClick={() => setMenuOpen(false)}>
-                Register
+                Signup
               </Link>
             </>
           )}

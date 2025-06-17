@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [profile, setProfile] = useState({ role: "" });
   const [getappointment, setAppointment] = useState(null);
+  const [getdoctorId,setdoctorId] = useState("");
 
   
 
@@ -166,6 +167,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getId = (doctorid) =>{
+    setdoctorId(doctorid);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -174,12 +179,14 @@ export const AuthProvider = ({ children }) => {
         isRegister,
         profile,
         getappointment,
+        getdoctorId,
         login,
         logout,
         register,
         getDoctorInfo,
         bookAppointment,
         updateDoctorInfo,
+        getId,
       }}
     >
       {children}

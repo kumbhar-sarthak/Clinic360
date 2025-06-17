@@ -15,7 +15,7 @@ const darktheme = createTheme({
 });
 
 const Appointment = () => {
-  const { user, bookAppointment, isLogin } = useContext(AuthContext);
+  const { user, bookAppointment, isLogin, getdoctorId } = useContext(AuthContext);
   const [doctorId, setDoctorId] = useState("");
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
@@ -25,6 +25,9 @@ const Appointment = () => {
 
   if(!isLogin){
     return <Navigate to="/login" replace/>
+  }
+  if(!getdoctorId){
+    return <Navigate to="/search/doctors" replace/>
   }
 
   useEffect(() => {
@@ -49,18 +52,23 @@ const Appointment = () => {
   return (
     <div className="min-h-[100dvh] flex items-center justify-center text-white pt-20 p-4 overflow-hidden">
       <div className="w-full max-w-7xl h-full rounded-xl shadow-xl overflow-hidden flex justify-between">
-        <div className="md:w-1/2 h-[80vh] bg-[url('https://images.pexels.com/photos/3845981/pexels-photo-3845981.jpeg?auto=compress&cs=tinysrgb&w=3840')] bg-cover bg-center rounded-xl" ></div>
+        <div className="md:w-1/2 h-[80vh] bg-[url('https://images.pexels.com/photos/3845981/pexels-photo-3845981.jpeg?auto=compress&cs=tinysrgb&w=3840')] bg-cover bg-center rounded-xl"></div>
 
         <div className="md:w-1/2 w-full p-8 flex flex-col justify-center">
-
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <ThemeProvider theme={darktheme}>
               <TextField
+                id="outlined-read-only-input"
                 label="Doctor ID"
                 variant="outlined"
-                value={doctorId}
+                value={getdoctorId}
                 onChange={(e) => setDoctorId(e.target.value)}
                 fullWidth
+                slotProps={{
+                  input: {
+                    readOnly: true,
+                  },
+                }}
                 required
               />
 
