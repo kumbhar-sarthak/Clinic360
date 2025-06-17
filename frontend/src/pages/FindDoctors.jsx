@@ -239,7 +239,7 @@ const FindDoctors = () => {
                     <button
                       className="mt-5 bg-[#B8CFCE] text-black rounded-md py-2 font-medium hover:bg-[#a2bab9] transition-all duration-200"
                       onClick={() => {
-                        getId(doctor._id);
+                        getId(doctor.userId);
                         navigate('/book-appointment');
                       }}
                     >
