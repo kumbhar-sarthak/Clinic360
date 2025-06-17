@@ -33,6 +33,8 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"], 
 }));
 
+app.options('*',cors());
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
