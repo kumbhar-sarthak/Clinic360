@@ -26,7 +26,6 @@ const ListAppointments = () => {
         });
 
         const data = await response.json();
-        console.log(data);
         setAppointments(data.appointments || []);
       } catch (error) {
         console.error("Error fetching appointments:", error);

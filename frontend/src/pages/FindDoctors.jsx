@@ -29,7 +29,7 @@ const FindDoctors = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`api/doctor/search`, {
+      const response = await fetch(`/api/doctor/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filters),
