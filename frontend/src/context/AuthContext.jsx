@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
-const API_URL = import.meta.env.VITE_API_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const refresh = async () => {
     try {
-      const res = await fetch(`${API_URL}/auth/refresh`, {
+      const res = await fetch(`api/auth/refresh`, {
         method: "POST",
         credentials: "include",
       });
@@ -44,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
+      const res = await fetch(`api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -66,8 +65,8 @@ export const AuthProvider = ({ children }) => {
   const register = async (formData) => {
     const URL =
       formData.role === "doctor"
-        ? `${API_URL}/auth/register/doctor`
-        : `${API_URL}/auth/register`;
+        ? `api/auth/register/doctor`
+        : `api/auth/register`;
 
     try {
       const res = await fetch(URL, {
@@ -91,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/logout`, {
+      const response = await fetch(`api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -110,7 +109,7 @@ export const AuthProvider = ({ children }) => {
 
   const getDoctorInfo = async (_id) => {
     try {
-      const res = await fetch(`${API_URL}/doctor/me?userId=${_id}`, {
+      const res = await fetch(`api/doctor/me?userId=${_id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -127,7 +126,7 @@ export const AuthProvider = ({ children }) => {
 
   const bookAppointment = async (doctorid, date, time, reason, _id) => {
     try {
-      const res = await fetch(`${API_URL}/appointment/book`, {
+      const res = await fetch(`api/appointment/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ doctorid, date, time, reason, _id }),
@@ -146,7 +145,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateDoctorInfo = async (doctorId, updatedData) => {
     try {
-      const response = await fetch(`${API_URL}/doctor/${doctorId}`, {
+      const response = await fetch(`api/doctor/${doctorId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),

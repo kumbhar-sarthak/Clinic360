@@ -18,7 +18,7 @@ const ListAppointments = () => {
 
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`${API_URL}/appointment/all`, {
+        const response = await fetch(`api/appointment/all`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ _id: user._id }),
@@ -26,6 +26,7 @@ const ListAppointments = () => {
         });
 
         const data = await response.json();
+        console.log(data);
         setAppointments(data.appointments || []);
       } catch (error) {
         console.error("Error fetching appointments:", error);

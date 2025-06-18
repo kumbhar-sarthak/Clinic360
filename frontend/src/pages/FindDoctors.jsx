@@ -5,7 +5,7 @@ import { FaLocationCrosshairs } from "react-icons/fa6";
 import AuthContext from "../context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL;
+
 
 const FindDoctors = () => {
   const { getId, isLogin } = useContext(AuthContext);
@@ -29,7 +29,7 @@ const FindDoctors = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`${API_URL}/doctor/search`, {
+      const response = await fetch(`api/doctor/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filters),
