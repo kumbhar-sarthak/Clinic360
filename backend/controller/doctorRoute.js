@@ -58,7 +58,8 @@ try {
   
     const query = filters.length > 0 ? { $or: filters } : {}
   
-    const doctors = await Doctor.find(query).sort({ speciality: -1});
+    const doctors = await Doctor.find(query).sort({ speciality: -1})
+                                .populate({path: "doctorId", populate: { path: "userId", select: "name email"}});
   
     if (!doctors) return new ThrowError(404, "Doctor Not Found");
   

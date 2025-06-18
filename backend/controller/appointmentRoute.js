@@ -177,9 +177,9 @@ AppRouter.get("/doctor/:doctorId", async (req, res) => {
   }
 });
 
-AppRouter.post("/all", async (req, res) => {
+AppRouter.post("/all", async (req, res, next) => {
   try {
-    if (!req.body?._id) {
+    if (!(req.body?._id)) {
       return res.status(400).json({ error: "User ID is required" });
     }
 
@@ -189,7 +189,7 @@ AppRouter.post("/all", async (req, res) => {
       .populate("doctorId", "name email")
       .populate("patientId", "name email");
 
-    if (!appointments || appointments.length === 0) {
+    if (!appointments.length) {
       return res.status(404).json({ error: "No appointments found" });
     }
 
