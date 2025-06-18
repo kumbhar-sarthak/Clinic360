@@ -37,7 +37,7 @@ const ListAppointments = () => {
 
   const handleCancel = async (i) => {
     try {
-      const response = await fetch(`${API_URL}/appointment/cancel/${i}`, {
+      const response = await fetch(`api/appointment/cancel/${i}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
