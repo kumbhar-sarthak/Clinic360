@@ -13,6 +13,7 @@ import ProfilePage from "./components/Profile.jsx";
 import FindDoctors from "./pages/FindDoctors.jsx";
 import Appointment from "./pages/Appointment.jsx";
 import ListAppointments from "./pages/ListAppointment.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 NProgress.configure({ showSpinner: false, speed: 500, easing: "ease-in-out", });
 
@@ -40,7 +41,8 @@ const AppContent = () => {
       <Route path="/profile" element={<ProfilePage />} /> 
       <Route path="/search/doctors" element={<FindDoctors />} /> 
       <Route path="/book-appointment" element={<Appointment />} /> 
-      <Route path="/list-appointments" element={<ListAppointments />} /> 
+      <Route path="/list-appointments" element={<ListAppointments />} />
+      <Route path="*" element={<NotFoundPage/>}/>
     </Routes>
   );
 };
