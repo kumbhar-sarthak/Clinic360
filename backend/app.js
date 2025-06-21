@@ -5,13 +5,22 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from "cookie-parser";
 import helmet from 'helmet';
+import rateLimit from "express-rate-limit"
 
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+})
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(limiter);
 app.use(express.urlencoded({
   extended: true,
 }))
