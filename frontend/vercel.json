@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://clinic360-998e.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

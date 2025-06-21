@@ -7,7 +7,7 @@ Easy to use responsive web applicatio to book appointment and search for the doc
 
 ## Captures
 
-![img](frontend\public\app.png)
+![img](frontend/public/app.png)
  Minimal Ui, easy to navigate and understand. few steps to book your first appointment
 
 ## Table of Contents
