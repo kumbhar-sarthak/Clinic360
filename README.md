@@ -5,6 +5,10 @@ Easy to use responsive web applicatio to book appointment and search for the doc
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 
+## Captures
+
+![img](frontend\public\app.png)
+ Minimal Ui, easy to navigate and understand. few steps to book your first appointment
 
 ## Table of Contents
 - [About the Project](#about-the-project)
